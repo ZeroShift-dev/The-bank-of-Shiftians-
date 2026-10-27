@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>National Bank of Shifts</title>
+<style>
+:root{--navy:#10243a;--blue:#1d4e89;--gold:#d9b45b;--bg:#f1f4f8;--white:#fff;--text:#172638;--muted:#64748b;--border:#dce3ec;--green:#16794b;--red:#b42318}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:var(--navy);color:white;padding:22px 18px 0;border-bottom:4px solid var(--gold)}
+.header-inner,nav,main,footer{max-width:1100px;margin:auto}
+.brand{display:flex;align-items:center;gap:14px;padding-bottom:20px}
+.seal{width:54px;height:54px;display:grid;place-items:center;border:2px solid var(--gold);border-radius:50%;color:var(--gold);font-size:23px;font-weight:800}
+.brand h1{font-size:21px;margin:0 0 5px}
+.brand p{margin:0;color:#d6e0ed;font-size:13px}
+nav{display:flex;overflow-x:auto;gap:5px}
+nav button{color:#e4ebf4;background:transparent;border:0;padding:13px 12px;white-space:nowrap;cursor:pointer;border-bottom:3px solid transparent}
+nav button.active,nav button:hover{color:white;border-bottom-color:var(--gold)}
+main{padding:25px 16px 40px}
+.page{display:none}
+.page.active{display:block}
+h2{margin:0 0 7px;font-size:25px}
+.subtitle{color:var(--muted);margin:0 0 23px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 7px #10243a08;min-width:0}
+.card h3{margin:0 0 16px;font-size:17px}
+.balance-card{background:var(--navy);color:white;border-color:var(--navy)}
+.balance-card.pines{background:var(--blue);border-color:var(--blue)}
+.balance-label{font-size:14px;color:#dbe6f3}
+.balance{font-size:31px;font-weight:750;margin:9px 0;overflow-wrap:anywhere}
+.balance-note{font-size:12px;color:#dbe6f3}
+.stat{font-size:25px;font-weight:700;margin:8px 0}
+label{display:block;font-size:13px;font-weight:650;margin:13px 0 6px}
+input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;background:white;font:inherit;color:var(--text)}
+button.primary,button.secondary,button.danger{padding:11px 15px;border-radius:7px;border:1px solid var(--blue);background:var(--blue);color:white;font:inherit;font-weight:650;cursor:pointer}
+button.secondary{color:var(--blue);background:white}
+button.danger{background:#b42318;border-color:#b42318}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px}
+.full{grid-column:1/-1}
+.notice{background:#eaf1fa;border:1px solid #c9d9ed;border-radius:8px;padding:12px;font-size:13px;margin-bottom:18px}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--border);white-space:nowrap}
+th{color:var(--muted);font-weight:650}
+.positive{color:var(--green)}
+.negative{color:var(--red)}
+.tag{display:inline-block;background:#e7f5ec;color:#17683f;border-radius:20px;padding:5px 9px;font-size:11px;font-weight:700}
+.card-visual{max-width:410px;min-height:220px;border-radius:16px;padding:23px;color:white;background:linear-gradient(135deg,#10243a,#245d91);border:1px solid #496b91;margin:12px 0 18px;position:relative;overflow:hidden}
+.card-visual:after{content:"";position:absolute;width:210px;height:210px;right:-65px;bottom:-100px;border:24px solid #ffffff18;border-radius:50%}
+.card-top{display:flex;justify-content:space-between;font-size:12px}
+.chip{width:42px;height:30px;border-radius:6px;background:linear-gradient(135deg,#e6d29a,#a88a43);margin:25px 0 18px}
+.card-number{letter-spacing:2px;font-size:17px}
+.card-bottom{display:flex;justify-content:space-between;margin-top:18px;font-size:11px}
+.empty{color:var(--muted);padding:20px 0;text-align:center}
+footer{padding:20px 16px 30px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+@media(max-width:650px){.grid,.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.brand h1{font-size:18px}.balance{font-size:27px}main{padding:20px 12px 30px}}
+</style>
+</head>
+<body>
+<header>
+<div class="header-inner">
+<div class="brand">
+<div class="seal">N</div>
+<div><h1>National Bank of Shifts</h1><p>The National Treasury and Banking Authority</p></div>
+</div>
+</div>
+<nav>
+<button class="active" data-page="overview">Overview</button>
+<button data-page="account">My Account</button>
+<button data-page="transfer">Transfers</button>
+<button data-page="transactions">Transactions</button>
+<button data-page="card">Virtual Card</button>
+<button data-page="admin">Administration</button>
+</nav>
+</header>
+
+<main>
+<section class="page active" id="overview">
+<h2>National Treasury Overview</h2>
+<p class="subtitle">Welcome to the official banking portal of your micronation.</p>
+<div class="grid">
+<div class="card balance-card"><div class="balance-label">Available balance — Shifts</div><div class="balance" id="overviewShifts">1,250.00 SHF</div><div class="balance-note">National currency: Shifts</div></div>
+<div class="card balance-card pines"><div class="balance-label">Available balance — Pines</div><div class="balance" id="overviewPines">425.00 PINE</div><div class="balance-note">Secondary currency: Pines</div></div>
+<div class="card"><h3>Account status</h3><span class="tag">ACTIVE</span><p>Account holder: <strong id="overviewName">Citizen</strong></p><p>Account number: <strong id="overviewAccount">SH-100001</strong></p></div>
+<div class="card"><h3>Recent activity</h3><div class="stat" id="overviewCount">0</div><div class="balance-label">Recorded transactions</div><div class="actions"><button class="primary" onclick="showPage('transfer')">Make a transfer</button><button class="secondary" onclick="showPage('transactions')">View history</button></div></div>
+</div>
+</section>
+
+<section class="page" id="account">
+<h2>My Account</h2><p class="subtitle">Manage your national bank profile.</p>
+<div class="card"><h3>Account profile</h3>
+<div class="form-grid">
+<div><label for="holder">Account holder name</label><input id="holder" maxlength="60" placeholder="Your citizen name"></div>
+<div><label for="accountNumber">Account number</label><input id="accountNumber" disabled></div>
+<div class="full"><label for="email">Contact email</label><input id="email" type="email" maxlength="100" placeholder="name@example.com"></div>
+</div>
+<div class="actions"><button class="primary" onclick="saveProfile()">Save profile</button></div>
+<p id="profileMessage" aria-live="polite"></p>
+</div>
+</section>
+
+<section class="page" id="transfer">
+<h2>National Transfers</h2><p class="subtitle">Transfer Shifts or Pines between accounts in your micronation.</p>
+<div class="notice">Transfers update this browser's local records. They do not send money to another person or financial institution.</div>
+<div class="card"><h3>New transfer</h3>
+<form id="transferForm">
+<label for="recipient">Recipient name or account number</label><input id="recipient" maxlength="80" required placeholder="Enter recipient">
+<div class="form-grid">
+<div><label for="currency">Currency</label><select id="currency"><option value="SHF">Shifts (SHF)</option><option value="PINE">Pines (PINE)</option></select></div>
+<div><label for="amount">Amount</label><input id="amount" type="number" min="0.01" max="100000000" step="0.01" required placeholder="0.00"></div>
+</div>
+<label for="memo">Transfer note</label><input id="memo" maxlength="120" placeholder="Optional note">
+<div class="actions"><button class="primary" type="submit">Submit transfer</button></div>
+</form>
+<p id="transferMessage" aria-live="polite"></p>
+</div>
+</section>
+
+<section class="page" id="transactions">
+<h2>Transaction Ledger</h2><p class="subtitle">View and export your recorded account activity.</p>
+<div class="card">
+<div class="form-grid">
+<div><label for="filterCurrency">Filter by currency</label><select id="filterCurrency" onchange="renderTransactions()"><option value="ALL">All currencies</option><option value="SHF">Shifts</option><option value="PINE">Pines</option></select></div>
+<div><label for="filterType">Filter by type</label><select id="filterType" onchange="renderTransactions()"><option value="ALL">All activity</option><option value="Transfer">Transfers</option><option value="Opening balance">Opening balances</option></select></div>
+</div>
+<div class="actions"><button class="secondary" onclick="exportCSV()">Export CSV</button></div>
+<div class="table-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Currency</th><th>Amount</th><th>Balance</th></tr></thead><tbody id="transactionRows"></tbody></table></div>
+<div id="transactionEmpty" class="empty" hidden>No transactions found.</div>
+</div>
+</section>
+
+<section class="page" id="card">
+<h2>Virtual Debit Card</h2><p class="subtitle">Your national account card design.</p>
+<div class="card"><span class="tag">VIRTUAL CARD DESIGN</span>
+<div class="card-visual">
+<div class="card-top"><strong>NATIONAL BANK OF SHIFTS</strong><span>THE</span></div>
+<div class="chip"></div><div class="card-number">•••• &nbsp; •••• &nbsp; •••• &nbsp; 1001</div>
+<div class="card-bottom"><div><div>CARDHOLDER</div><strong id="cardHolder">CITIZEN</strong></div><div><div>CURRENCY</div><strong>SHIFTS / PINES</strong></div></div>
+</div>
+<p>This card design represents your micronation's currencies. It is not connected to payment networks.</p>
+<div class="actions"><button class="secondary" onclick="showPage('account')">Edit cardholder name</button></div>
+</div>
+</section>
+
+<section class="page" id="admin">
+<h2>Bank Administration</h2><p class="subtitle">Administrative overview of the local ledger.</p>
+<div class="notice">This prototype has no administrator login or server-side security. Account records are stored in this browser and are not shared between users or devices.</div>
+<div class="grid">
+<div class="card"><h3>Total recorded activity</h3><div class="stat" id="adminCount">0</div><p>Transactions stored in this browser.</p></div>
+<div class="card"><h3>Account balances</h3><p>Shifts: <strong id="adminShifts">1,250.00 SHF</strong></p><p>Pines: <strong id="adminPines">425.00 PINE</strong></p></div>
+</div>
+<div class="card" style="margin-top:17px"><h3>Ledger records</h3>
+<div class="table-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Currency</th><th>Amount</th></tr></thead><tbody id="adminRows"></tbody></table></div>
+<div class="actions"><button class="danger" onclick="resetData()">Reset local account data</button></div><p id="adminMessage" aria-live="polite"></p>
+</div>
+</section>
+</main>
+
+<footer><strong>National Bank of Shifts</strong> · Government of The<br>National currencies: Shifts and Pines.<br>Account records are stored locally in this browser.</footer>
+
+<script>
+const STORAGE_KEY="nationalBankOfShifts_v1";
+
+function initialData(){
+return{
+profile:{holder:"Citizen",accountNumber:"SH-100001",email:""},
+balances:{SHF:1250,PINE:425},
+transactions:[
+{id:"TX-001",date:new Date().toISOString(),type:"Opening balance",description:"Initial Shifts account balance",currency:"SHF",amount:1250,balance:1250},
+{id:"TX-002",date:new Date().toISOString(),type:"Opening balance",description:"Initial Pines account balance",currency:"PINE",amount:425,balance:425}
+]};
+}
+
+function loadData(){
+try{
+const saved=localStorage.getItem(STORAGE_KEY);
+if(!saved)return initialData();
+const d=JSON.parse(saved);
+if(!d.profile||!d.balances||!Array.isArray(d.transactions))return initialData();
+return d;
+}catch{return initialData();}
+}
+
+let data=loadData();
+
+function persist(){
+try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));return true;}
+catch{alert("Unable to save data in this browser.");return false;}
+}
+
+function money(value,currency){
+return Number(value).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+" "+currency;
+}
+
+function currencyName(currency){
+return currency==="SHF"?"Shifts":"Pines";
+}
+
+function showPage(pageId){
+document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===pageId));
+document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===pageId));
+if(pageId==="transactions")renderTransactions();
+if(pageId==="admin")renderAdmin();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+
+function saveProfile(){
+const holder=document.getElementById("holder").value.trim();
+const email=document.getElementById("email").value.trim();
+if(!holder){document.getElementById("profileMessage").textContent="Please enter an account holder name.";return;}
+data.profile.holder=holder;
+data.profile.email=email;
+if(!persist())return;
+renderAll();
+document.getElementById("profileMessage").textContent="Profile saved.";
+}
+
+document.getElementById("transferForm").addEventListener("submit",event=>{
+event.preventDefault();
+const recipient=document.getElementById("recipient").value.trim();
+const currency=document.getElementById("currency").value;
+const amount=Number(document.getElementById("amount").value);
+const memo=document.getElementById("memo").value.trim();
+
+if(!recipient||!Number.isFinite(amount)||amount<=0){
+document.getElementById("transferMessage").textContent="Enter a recipient and a valid amount.";return;
+}
+if(amount>data.balances[currency]){
+document.getElementById("transferMessage").textContent="Insufficient "+currencyName(currency)+" balance.";return;
+}
+
+data.balances[currency]=Math.round((data.balances[currency]-amount)*100)/100;
+data.transactions.unshift({
+id:"TX-"+Date.now(),
+date:new Date().toISOString(),
+type:"Transfer",
+description:"To "+recipient+(memo?" — "+memo:""),
+currency,
+amount:-amount,
+balance:data.balances[currency]
+});
+
+if(!persist())return;
+renderAll();
+document.getElementById("transferForm").reset();
+document.getElementById("transferMessage").textContent="Transfer recorded in your local ledger.";
+});
+
+function renderTransactions(){
+const currency=document.getElementById("filterCurrency").value;
+const type=document.getElementById("filterType").value;
+const rows=data.transactions.filter(tx=>(currency==="ALL"||tx.currency===currency)&&(type==="ALL"||tx.type===type));
+const tbody=document.getElementById("transactionRows");
+tbody.replaceChildren();
+
+rows.forEach(tx=>{
+const tr=document.createElement("tr");
+[
+new Date(tx.date).toLocaleString(),
+tx.type,
+tx.description,
+currencyName(tx.currency),
+money(tx.amount,tx.currency),
+money(tx.balance,tx.currency)
+].forEach((value,index)=>{
+const td=document.createElement("td");
+td.textContent=value;
+if(index===4)td.className=tx.amount>=0?"positive":"negative";
+tr.appendChild(td);
+});
+tbody.appendChild(tr);
+});
+document.getElementById("transactionEmpty").hidden=rows.length>0;
+}
+
+function renderAdmin(){
+document.getElementById("adminCount").textContent=data.transactions.length;
+document.getElementById("adminShifts").textContent=money(data.balances.SHF,"SHF");
+document.getElementById("adminPines").textContent=money(data.balances.PINE,"PINE");
+const tbody=document.getElementById("adminRows");
+tbody.replaceChildren();
+
+data.transactions.forEach(tx=>{
+const tr=document.createElement("tr");
+[
+new Date(tx.date).toLocaleString(),
+tx.type,
+tx.description,
+currencyName(tx.currency),
+money(tx.amount,tx.currency)
+].forEach(value=>{
+const td=document.createElement("td");
+td.textContent=value;
+tr.appendChild(td);
+});
+tbody.appendChild(tr);
+});
+}
+
+function renderAll(){
+document.getElementById("overviewShifts").textContent=money(data.balances.SHF,"SHF");
+document.getElementById("overviewPines").textContent=money(data.balances.PINE,"PINE");
+document.getElementById("overviewName").textContent=data.profile.holder;
+document.getElementById("overviewAccount").textContent=data.profile.accountNumber;
+document.getElementById("overviewCount").textContent=data.transactions.length;
+document.getElementById("holder").value=data.profile.holder;
+document.getElementById("accountNumber").value=data.profile.accountNumber;
+document.getElementById("email").value=data.profile.email;
+document.getElementById("cardHolder").textContent=data.profile.holder.toUpperCase();
+renderTransactions();
+renderAdmin();
+}
+
+function exportCSV(){
+const currency=document.getElementById("filterCurrency").value;
+const type=document.getElementById("filterType").value;
+const rows=data.transactions.filter(tx=>(currency==="ALL"||tx.currency===currency)&&(type==="ALL"||tx.type===type));
+const quote=value=>'"'+String(value).replace(/"/g,'""')+'"';
+const lines=[["Date","Type","Description","Currency","Amount","Balance"].map(quote).join(",")];
+rows.forEach(tx=>lines.push([
+new Date(tx.date).toISOString(),
+tx.type,
+tx.description,
+currencyName(tx.currency),
+tx.amount.toFixed(2),
+tx.balance.toFixed(2)
+].map(quote).join(",")));
+
+const blob=new Blob([lines.join("\r\n")],{type:"text/csv;charset=utf-8;"});
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");
+a.href=url;
+a.download="national-bank-transactions.csv";
+a.click();
+URL.revokeObjectURL(url);
+}
+
+function resetData(){
+if(!confirm("Reset this browser's account balances and transaction history?"))return;
+data=initialData();
+persist();
+renderAll();
+document.getElementById("adminMessage").textContent="Local account data has been reset.";
+}
+
+renderAll();
+</script>
+</body>
+</html>
